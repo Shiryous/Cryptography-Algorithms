@@ -6,6 +6,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+const int SIZE_OF_ALPHABET = 63;
+const char myAlphabet[63] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+						 											 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
 /**
 * This is the implementation of the OTP (One-Time-Pad) algorithm
 * --------------------------------------------------------------------------------------------------
@@ -126,3 +130,78 @@ int check_key(char* plain_text,char* key,int len){
 - as well as the random secret key and should return the result of the operation.
 ----------------------------------------------------------------------------------------------------
 */
+
+char* caesar_encrypt(char * plain_text,int shift){
+	int i =0;
+	char* shifted_alphabet = malloc(SIZE_OF_ALPHABET);
+	char* caesar_encrypted;
+	strcpy(shifted_alphabet,myAlphabet);
+
+	left_shift_alphabet(shifted_alphabet,shift);
+
+	while(i<strlen(plain_text)){
+		caesar_encrypted[i] = shifted_alphabet[findIndex(myAlphabet,SIZE_OF_ALPHABET,plain_text[i])];
+		i++;
+	}
+	return caesar_encrypted;
+}
+
+char* caesar_decrypt(char * cipher_text,int shift){
+	int i =0;
+	char* shifted_alphabet = malloc(SIZE_OF_ALPHABET);
+	char* caesar_decrypted = malloc(strlen(cipher_text));
+	strcpy(shifted_alphabet,myAlphabet);
+
+	printf("%ld",strlen(caesar_decrypted));
+
+	right_shift_alphabet(shifted_alphabet,shift);
+
+	while(i<strlen(cipher_text)){
+		caesar_decrypted[i] = shifted_alphabet[findIndex(myAlphabet,SIZE_OF_ALPHABET,cipher_text[i])];
+		i++;
+	}
+	//caesar_decrypt[i] = '\0';
+	return caesar_decrypted;
+}
+void left_shift_alphabet(char alphabet[],int shift){
+	int i;
+	for(i = 0;i<shift; i++){    
+	   left_shift_alphabet_by_one(alphabet);
+	} 
+}
+void left_shift_alphabet_by_one(char alphabet[]){
+	int i;
+
+	char temporary = alphabet[0];
+
+    for (i = 0; i < SIZE_OF_ALPHABET-1; i++){
+        alphabet[i] = alphabet[i + 1];
+    }
+    alphabet[SIZE_OF_ALPHABET-2] = temporary;
+
+}
+void right_shift_alphabet(char alphabet[],int shift){
+	int i;
+	for(i = 0;i<shift; i++){    
+	   right_shift_alphabet_by_one(alphabet);
+	} 
+}
+void right_shift_alphabet_by_one(char alphabet[]){
+	int i;
+
+	char temporary = alphabet[SIZE_OF_ALPHABET-2];
+
+    for (i = SIZE_OF_ALPHABET-1; i > 0 ; i--){
+        alphabet[i] = alphabet[i - 1];
+    }
+    alphabet[0] = temporary;
+
+}
+int findIndex( const char a[], int size, char value )
+{
+    int index = 0;
+
+    while ( index < size && a[index] != value ) ++index;
+
+    return ( index == size ? -1 : index );
+}
