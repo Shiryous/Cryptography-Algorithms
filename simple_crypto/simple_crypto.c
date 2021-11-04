@@ -1,4 +1,11 @@
+/**
+ *This is the include we need to run our library
+ */
 
+#include "simple_crypto.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 /**
 * This is the implementation of the OTP (One-Time-Pad) algorithm
 * --------------------------------------------------------------------------------------------------
@@ -11,75 +18,46 @@
 ----------------------------------------------------------------------------------------------------
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "simple_crypto.h"
-
-
-int main()
-{
-	char* plain_text = "secret";
-	int length = (int)strlen(plain_text);
-	char* cipher_text = (char*)malloc(length*sizeof(char));
-	char* secret_key = (char*)malloc(length*sizeof(char));
-	char* decrypt_text = (char*)malloc(length*sizeof(char));
-
-	secret_key = OTP_generate_key(length);
-	
-	cipher_text = OTP_encrypt_text(plain_text,secret_key);
-
-	printf("This is the plain_text:%s\n",plain_text);
-	printf("This is the cipher_text:");
-
-
-	print_string(cipher_text);
-
-	decrypt_text = OTP_decrypt_text(cipher_text,secret_key);
-
-	printf("This is the decrypt_text:%s\n",decrypt_text);
-
-	return 0;
-}
 /**
  * This is a function that takes the plaintext and encrypts it using the secret key by XOR-ing the characters
  */
 char* OTP_encrypt_text(char* plain_text,char* key){
 
-	int n,length = strlen(plain_text);
+	int n = 0,length = strlen(plain_text);
 	
 	char* cipher_text = malloc(length);
-	
-	for(n = 0; n<length; n++){
+
+	while(n<length){
 		cipher_text[n] = plain_text[n]^key[n];
+		n++;
 	}
-	
-	//strcat(cipher_text, "\0");
-	free(cipher_text);
-	printf("strlen cipher_text : %ld\n", strlen(cipher_text));
+	cipher_text[n] = '\0';
 	
 	return cipher_text;
 }
 /**
- * This is a function that takes the ciphertext and encrypts it using the secret key by XOR-ing the characters
+ * This is a function that takes the ciphertext and decrypts it using the secret key by XOR-ing the characters
+ * Its basically the same with OTP_encrypt_text. 
+ * But different to make clearer the steps we follow
  */
 char* OTP_decrypt_text(char* cipher_text,char* key){
-	int n,length = strlen(cipher_text);
+	
+	int n = 0,length = strlen(cipher_text);
+
 	char* decrypt_text = malloc(length);
 
-	for(n = 0; n<length;n++){
+	while(n<length){
 		decrypt_text[n] = cipher_text[n]^key[n];
+		n++;
 	}
-	//strcat(decrypt_text, "\0");
-	printf("strlen decrypt_text : %ld\n", strlen(decrypt_text));
+	decrypt_text[n] = '\0';
 	
-	free(decrypt_text);
 	return decrypt_text;
 }
 
-
 /** In here we generate random key using the dev/urandom
  * n : Number of bytes/characters found in the plaintext
+ * returns: The key for the OTP encryption
  */
 char* OTP_generate_key(int n){
 
@@ -91,7 +69,7 @@ char* OTP_generate_key(int n){
 
 	fp = fopen("/dev/urandom", "r"); // Set the file pointer to the /dev/urandom and read
 	
-	while(count!=n){
+	while(count<n){
 
 		fread(&buffer, 1, 1, fp);	//Using fread we read 1 char from the file pointer to the buffer
 
@@ -100,26 +78,40 @@ char* OTP_generate_key(int n){
 			count++;
 		}
 	}
-	fclose(fp);	//close the file when we are done
-
+	fclose(fp);								// Close the file when we are done
 	return data;
 }
 
-
+/**
+ * This function prints the encrypted strings so that we can also print non-printable characters in hexadecimal representation.
+ */
 void print_string(char* text){
 	int counter = 0;
-	while(counter < strlen(text)){
-		if(text[counter]<31){ // if the character is not printable print its hex value in brackets
+	printf("[OTP] encrypted:");
+	while(counter < strlen(text)){							// Print the string character by character
+		if(text[counter]<31){								// If the character is non-printable print its hex value in brackets
 			printf("(Hex:%x)", text[counter] & 0xff);
 		}
-		else	printf("%c",text[counter]); // If its printable just print it
+		else	printf("%c",text[counter]); 				// If its printable just print it
 		counter++;
 	}
 	printf("\n");
 }
+/**
+ * Checks if there is a same character in the same position of the key and the plaintext.
+ * Do this to avoid the character '\0' to be able to encrypt correctly the plaintext
+ */
 
-
-
+int check_key(char* plain_text,char* key,int len){
+	int n=0;
+	while(n<len){
+		if(plain_text[n]==key[n]){
+			return 1;
+		}
+		n++;
+	}
+	return 0;
+}
 
 
 /**
@@ -133,16 +125,4 @@ void print_string(char* text){
 - The function(s) encrypting and decrypting the messages should receive as arguments the plainor cipher-text 
 - as well as the random secret key and should return the result of the operation.
 ----------------------------------------------------------------------------------------------------
-*/
-
-
-/*char* caesar_encrypt(char* plain_text,int n){
-	char* cipher_text;
-	unsigned int count = 0;
-	while(plain_text[count]!="\0"){
-		cipher_text[count] = plain_text[count] + n;
-		count++;
-	}
-	return cipher_text;
-}
 */

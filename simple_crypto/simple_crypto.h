@@ -3,7 +3,6 @@
 /**
  * this is a function that generates a secret key for One time Pad
  */
-
 char* OTP_generate_key(int n);
 
 /**This function encrypts the plaintext using the One Time Pad cipher
@@ -31,3 +30,5 @@ char* OTP_decrypt_text(char* cipher_text,char* key);
 char* caesar_encrypt(char* plain_text,int n);
 
 void print_string(char* text);
+
+int check_key(char* plain_text,char* key,int length);
