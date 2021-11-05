@@ -132,6 +132,8 @@ int check_key(char* plain_text,char* key,int len){
 */
 
 char* caesar_encrypt(char * plain_text,int shift){
+	char* buffer = skip_non_alphabet(plain_text);;
+	plain_text = buffer;
 	int i =0;
 	char* shifted_alphabet = malloc(SIZE_OF_ALPHABET);
 	char* caesar_encrypted;
@@ -149,10 +151,8 @@ char* caesar_encrypt(char * plain_text,int shift){
 char* caesar_decrypt(char * cipher_text,int shift){
 	int i =0;
 	char* shifted_alphabet = malloc(SIZE_OF_ALPHABET);
-	char* caesar_decrypted = malloc(strlen(cipher_text));
+	char* caesar_decrypted ;
 	strcpy(shifted_alphabet,myAlphabet);
-
-	printf("%ld",strlen(caesar_decrypted));
 
 	right_shift_alphabet(shifted_alphabet,shift);
 
@@ -160,7 +160,6 @@ char* caesar_decrypt(char * cipher_text,int shift){
 		caesar_decrypted[i] = shifted_alphabet[findIndex(myAlphabet,SIZE_OF_ALPHABET,cipher_text[i])];
 		i++;
 	}
-	//caesar_decrypt[i] = '\0';
 	return caesar_decrypted;
 }
 void left_shift_alphabet(char alphabet[],int shift){
@@ -205,3 +204,32 @@ int findIndex( const char a[], int size, char value )
 
     return ( index == size ? -1 : index );
 }
+char* skip_non_alphabet(char* plain_text){
+
+	int i = 0,count = 0,length = strlen(plain_text);
+	char* buffer = malloc(strlen(plain_text));
+
+	while(i<length){
+		if((plain_text[i]>65) && (plain_text[i]<90) || (plain_text[i]>47 && plain_text[i]<58) || (plain_text[i]>96 && plain_text[i]<123)){
+			buffer[count] = plain_text[i]; 	
+			count++;	
+		}		
+		i++;
+	}
+	buffer[i-1] = '\0';
+	return buffer;
+}
+
+
+
+/**
+* This is the implementation of the the Vigeneres cipher
+* --------------------------------------------------------------------------------------------------------
+- The Vigenère’s cipher encrypts an alphabetic plaintext using a series of interwoven Caesar’s
+- ciphers. In order to encrypt a message, the algorithm uses a table of alphabets, namely tabula
+- recta, which has the alphabet written out 26 times in different rows, each alphabet shifted
+- cyclically to the left compared to the previous alphabet, corresponding to the 26 possible Caesar
+- ciphers. At different points in the encryption process, the cipher uses a different alphabet from
+- one of the rows.
+----------------------------------------------------------------------------------------------------------
+*/

@@ -60,3 +60,5 @@ void right_shift_alphabet(char alphabet[],int shift);
 void right_shift_alphabet_by_one(char alphabet[]);
 
 int findIndex( const char a[], int size, char value );
+
+char* skip_non_alphabet(char* plain_text);
