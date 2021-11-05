@@ -62,3 +62,9 @@ void right_shift_alphabet_by_one(char alphabet[]);
 int findIndex( const char a[], int size, char value );
 
 char* skip_non_alphabet(char* plain_text);
+
+char* skip_non_upper_characters(char * plain_text);
+
+void OTP_cipher();
+void caesar_cipher();
+void vigenere_cipher();

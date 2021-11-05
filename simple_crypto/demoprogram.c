@@ -10,10 +10,19 @@ const int MAX_TEXT_SIZE = 256;
 
 int main()
 {
+	//OTP_cipher();
+	//caesar_cipher();
+	vigenere_cipher();
+
+	return 0;
+}
+
+
+/** This is the part for the One Time Pad Cipher
+*/
+void OTP_cipher(){
 	char plain_text[MAX_TEXT_SIZE], *cipher_text, *secret_key, *decrypt_text;
-	
-	/** This is the part for the One Time Pad Cipher
-	*/
+
 	printf("[OTP] input    :");
 	fgets(plain_text,MAX_TEXT_SIZE,stdin); 		//Read string to be encrypted
 	
@@ -33,22 +42,30 @@ int main()
 
 	printf("[OTP] decrypted:%s\n",decrypt_text);			// Print the decrypted text
 
-	/** This is the part for the Caesars cipher
-	 */
+}
+/** This is the part for the Caesars cipher
+ */
+void caesar_cipher(){
+
 	char caesar_plain_text[MAX_TEXT_SIZE], *caesar_cipher_text, *caesar_decrypt_text;
 	int shift=0;
+
 	printf("[Caesars] input    :");
-	fgets(caesar_plain_text,MAX_TEXT_SIZE,stdin); 		// Read string to be encrypted
+	fgets(caesar_plain_text,MAX_TEXT_SIZE,stdin); 			// Read string to be encrypted
 
 	caesar_plain_text[strlen(caesar_plain_text)-1] = '\0';	// Remove the last character from fgets
 
 	/** This is for the malakaproofness of the code
 	 */
 	while(shift<=0){
-		printf("[Caesars] key    :");				// Scan the shift number 
+		printf("[Caesars] key    :");						// Scan the shift number 
 		scanf("%d",&shift);
+
 	}
-	shift = shift%63;								// Apply modulo 63 so even if they give us a number larger than 62 we can handle it
+	int c;
+	while ( (c = getchar()) != EOF && c != '\n') { }
+
+	shift = shift%63;										// Apply modulo 63 so even if they give us a number larger than 62 we can handle it
 
 	caesar_cipher_text = caesar_encrypt(caesar_plain_text,shift);
 
@@ -58,5 +75,28 @@ int main()
 
 	printf("[Caesars] decrypted:%s\n",caesar_decrypt_text);
 
-	return 0;
+}
+
+/** This is the part for the Vigeneres cipher
+ */
+void vigenere_cipher(){
+
+	char vigenere_plain_text[MAX_TEXT_SIZE], *vigenere_cipher_text, *vigenere_decrypt_text;
+
+	printf("[Vigenere] input    :");
+	
+	fgets(vigenere_plain_text,MAX_TEXT_SIZE,stdin); 			// Read string to be encrypted
+
+	vigenere_plain_text[strlen(vigenere_plain_text)-1] = '\0';	// Remove the last character from fgets
+
+	printf("[Vigenere] key    :");
+	
+	char* vigenere_key = malloc(strlen(vigenere_plain_text));
+
+	fgets(vigenere_key,MAX_TEXT_SIZE,stdin); 			// Read string to be encrypted
+
+	vigenere_key[strlen(vigenere_key)-1] = '\0';	// Remove the last character from fgets
+
+	char * new_key = malloc(strlen(vigenere_plain_text));
+
 }

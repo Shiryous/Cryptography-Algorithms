@@ -21,7 +21,10 @@ const char myAlphabet[63] = {'0','1','2','3','4','5','6','7','8','9','A','B','C'
 - the plaintext. 
 ----------------------------------------------------------------------------------------------------
 */
-
+typedef struct 
+{
+	char matrix[26][26];
+}tabula;
 /**
  * This is a function that takes the plaintext and encrypts it using the secret key by XOR-ing the characters
  */
@@ -149,7 +152,7 @@ char* caesar_encrypt(char * plain_text,int shift){
 }
 
 char* caesar_decrypt(char * cipher_text,int shift){
-	int i =0;
+	int i=0;
 	char* shifted_alphabet = malloc(SIZE_OF_ALPHABET);
 	char* caesar_decrypted ;
 	strcpy(shifted_alphabet,myAlphabet);
@@ -160,6 +163,7 @@ char* caesar_decrypt(char * cipher_text,int shift){
 		caesar_decrypted[i] = shifted_alphabet[findIndex(myAlphabet,SIZE_OF_ALPHABET,cipher_text[i])];
 		i++;
 	}
+
 	return caesar_decrypted;
 }
 void left_shift_alphabet(char alphabet[],int shift){
@@ -210,13 +214,13 @@ char* skip_non_alphabet(char* plain_text){
 	char* buffer = malloc(strlen(plain_text));
 
 	while(i<length){
-		if((plain_text[i]>65) && (plain_text[i]<90) || (plain_text[i]>47 && plain_text[i]<58) || (plain_text[i]>96 && plain_text[i]<123)){
+		if((plain_text[i]>64) && (plain_text[i]<90) || (plain_text[i]>47 && plain_text[i]<58) || (plain_text[i]>96 && plain_text[i]<123)){
 			buffer[count] = plain_text[i]; 	
 			count++;	
 		}		
 		i++;
 	}
-	buffer[i-1] = '\0';
+	buffer[count] = '\0';
 	return buffer;
 }
 
@@ -233,3 +237,34 @@ char* skip_non_alphabet(char* plain_text){
 - one of the rows.
 ----------------------------------------------------------------------------------------------------------
 */
+char* skip_non_upper_characters(char * plain_text){
+	int i = 0,count = 0,length = strlen(plain_text);
+	char* buffer;//= malloc(strlen(plain_text));
+
+	while(i<length){
+		if((plain_text[i]>64) && (plain_text[i]<91)){
+			buffer[count] = plain_text[i]; 	
+			count++;	
+		}		
+		i++;
+	}
+	buffer[count] = '\0';
+	return buffer;
+}
+char* create_key_vigenere(char* plain_text,char* keyword){
+	int length = strlen(keyword);
+	int i = 0;
+	char* key = malloc(strlen(plain_text));
+
+	while(i<strlen(plain_text)){
+		key[i] = keyword[i%length];
+		i++;
+	}
+	key[i] = '\0';
+	return key;
+}
+tabula create_tabula_recta(){
+	
+	
+	return ;
+}
