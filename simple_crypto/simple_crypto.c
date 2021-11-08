@@ -287,3 +287,22 @@ void left_shift_upper_alphabet_by_one(char alphabet[]){
     alphabet[TABULA_SIZE-1] = temporary;
 
 }
+char* vigenere_encrypt(char* plain_text,char* keyword){
+	tabula my_tabula = create_tabula_recta();		//CReate the tabula recta
+	char*	my_key = create_key_vigenere(plain_text,keyword);	//THIS is the key with the same size with the plaintext
+	char* vigenere_encrypted;
+	int i=0;
+	
+	while(i<strlen(my_key)){
+		vigenere_encrypted[i] = my_tabula.matrix[char_index(plain_text[i])][char_index(my_key[i])];
+		i++;
+	}
+	vigenere_encrypted[i] = '\0';
+	return vigenere_encrypted;
+}
+int char_index(char ch){
+	int index;
+
+	index = (int)ch-65;
+	return index;
+}

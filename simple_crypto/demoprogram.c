@@ -10,8 +10,8 @@ const int MAX_TEXT_SIZE = 256;
 
 int main()
 {
-	OTP_cipher();
-	caesar_cipher();
+	//OTP_cipher();
+	//caesar_cipher();
 	vigenere_cipher();
 	return 0;
 }
@@ -96,18 +96,6 @@ void vigenere_cipher(){
 
 	key[strlen(key)-1] = '\0';	// Remove the last character from fgets
 
-	char * new_key = malloc(strlen(plain_text));
-
-	tabula my_tabula = create_tabula_recta();
-
-	for (int i = 0; i < TABULA_SIZE; ++i)
-	{
-		for (int j = 0; j < TABULA_SIZE; ++j)
-		{
-			printf("%c ",my_tabula.matrix[i][j] );
-		}	
-		printf("\n");
-	}
-	
+	cipher_text = vigenere_encrypt(plain_text,key);
 
 }
