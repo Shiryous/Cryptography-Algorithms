@@ -1,4 +1,8 @@
 // This is the header file of the simplr crypto program
+typedef struct tabula
+{
+    char matrix[26][26];
+}tabula;
 
 /**
  * this is a function that generates a secret key for One time Pad
@@ -64,6 +68,11 @@ int findIndex( const char a[], int size, char value );
 char* skip_non_alphabet(char* plain_text);
 
 char* skip_non_upper_characters(char * plain_text);
+
+tabula create_tabula_recta();
+
+void left_shift_upper_alphabet_by_one(char alphabet[]);
+
 
 void OTP_cipher();
 void caesar_cipher();

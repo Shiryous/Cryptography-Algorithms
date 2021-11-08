@@ -7,7 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+const int TABULA_SIZE = 26;
 const int SIZE_OF_ALPHABET = 63;
+const char upperAlphabet[26] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 const char myAlphabet[63] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
 						 											 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
 /**
@@ -21,10 +23,7 @@ const char myAlphabet[63] = {'0','1','2','3','4','5','6','7','8','9','A','B','C'
 - the plaintext. 
 ----------------------------------------------------------------------------------------------------
 */
-typedef struct 
-{
-	char matrix[26][26];
-}tabula;
+
 /**
  * This is a function that takes the plaintext and encrypts it using the secret key by XOR-ing the characters
  */
@@ -264,7 +263,27 @@ char* create_key_vigenere(char* plain_text,char* keyword){
 	return key;
 }
 tabula create_tabula_recta(){
-	
-	
-	return ;
+	tabula my_tabula;
+	char tmpAlphabet[SIZE_OF_ALPHABET];
+	strcpy(tmpAlphabet,upperAlphabet);
+	for (int i = 0; i < TABULA_SIZE; ++i)
+	{
+		for (int j = 0; j < TABULA_SIZE; ++j)
+		{
+			my_tabula.matrix[i][j] = tmpAlphabet[j];
+		}
+		left_shift_upper_alphabet_by_one(tmpAlphabet);
+	}
+	return my_tabula ;
+}
+void left_shift_upper_alphabet_by_one(char alphabet[]){
+	int i;
+
+	char temporary = alphabet[0];
+
+    for (i = 0; i < TABULA_SIZE-1; i++){
+        alphabet[i] = alphabet[i + 1];
+    }
+    alphabet[TABULA_SIZE-1] = temporary;
+
 }

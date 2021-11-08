@@ -10,10 +10,9 @@ const int MAX_TEXT_SIZE = 256;
 
 int main()
 {
-	//OTP_cipher();
-	//caesar_cipher();
+	OTP_cipher();
+	caesar_cipher();
 	vigenere_cipher();
-
 	return 0;
 }
 
@@ -47,13 +46,13 @@ void OTP_cipher(){
  */
 void caesar_cipher(){
 
-	char caesar_plain_text[MAX_TEXT_SIZE], *caesar_cipher_text, *caesar_decrypt_text;
-	int shift=0;
+	char plain_text[MAX_TEXT_SIZE], *cipher_text, *decrypt_text;
+	int shift = 0;
 
 	printf("[Caesars] input    :");
-	fgets(caesar_plain_text,MAX_TEXT_SIZE,stdin); 			// Read string to be encrypted
+	fgets(plain_text,MAX_TEXT_SIZE,stdin); 			// Read string to be encrypted
 
-	caesar_plain_text[strlen(caesar_plain_text)-1] = '\0';	// Remove the last character from fgets
+	plain_text[strlen(plain_text)-1] = '\0';	// Remove the last character from fgets
 
 	/** This is for the malakaproofness of the code
 	 */
@@ -67,13 +66,13 @@ void caesar_cipher(){
 
 	shift = shift%63;										// Apply modulo 63 so even if they give us a number larger than 62 we can handle it
 
-	caesar_cipher_text = caesar_encrypt(caesar_plain_text,shift);
+	cipher_text = caesar_encrypt(plain_text,shift);
 
-	printf("[Caesars] encrypted:%s\n",caesar_cipher_text);
+	printf("[Caesars] encrypted:%s\n",cipher_text);
 
-	caesar_decrypt_text = caesar_decrypt(caesar_cipher_text,shift);
+	decrypt_text = caesar_decrypt(cipher_text,shift);
 
-	printf("[Caesars] decrypted:%s\n",caesar_decrypt_text);
+	printf("[Caesars] decrypted:%s\n",decrypt_text);
 
 }
 
@@ -81,22 +80,34 @@ void caesar_cipher(){
  */
 void vigenere_cipher(){
 
-	char vigenere_plain_text[MAX_TEXT_SIZE], *vigenere_cipher_text, *vigenere_decrypt_text;
+	char plain_text[MAX_TEXT_SIZE], *cipher_text, *decrypt_text;
 
 	printf("[Vigenere] input    :");
 	
-	fgets(vigenere_plain_text,MAX_TEXT_SIZE,stdin); 			// Read string to be encrypted
+	fgets(plain_text,MAX_TEXT_SIZE,stdin); 			// Read string to be encrypted
 
-	vigenere_plain_text[strlen(vigenere_plain_text)-1] = '\0';	// Remove the last character from fgets
+	plain_text[strlen(plain_text)-1] = '\0';	// Remove the last character from fgets
 
 	printf("[Vigenere] key    :");
 	
-	char* vigenere_key = malloc(strlen(vigenere_plain_text));
+	char* key = malloc(strlen(plain_text));
 
-	fgets(vigenere_key,MAX_TEXT_SIZE,stdin); 			// Read string to be encrypted
+	fgets(key,MAX_TEXT_SIZE,stdin); 			// Read string to be encrypted
 
-	vigenere_key[strlen(vigenere_key)-1] = '\0';	// Remove the last character from fgets
+	key[strlen(key)-1] = '\0';	// Remove the last character from fgets
 
-	char * new_key = malloc(strlen(vigenere_plain_text));
+	char * new_key = malloc(strlen(plain_text));
+
+	tabula my_tabula = create_tabula_recta();
+
+	for (int i = 0; i < TABULA_SIZE; ++i)
+	{
+		for (int j = 0; j < TABULA_SIZE; ++j)
+		{
+			printf("%c ",my_tabula.matrix[i][j] );
+		}	
+		printf("\n");
+	}
+	
 
 }
