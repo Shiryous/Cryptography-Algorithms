@@ -1,6 +1,34 @@
-// This is the header file of the simple crypto program
+Author:Monogyios Antonios 
+Technical University of Crete
+Security of Systems  
+------------------------------------------------------------------------------------------------------------
+This is a program called simple_crypto written in the language C creates and utilises 3 different ciphers.
+The One Time Pad, the Caesar and the Vigenere's ciphers.
+------------------------------------------------------------------------------------------------------------
+ABSTRACT:
 
-/** Define the struct for th Tabula Recta
+Firstly, the One Time Pad cipher takes the plain text we give and then generates a random key using the 
+dev/urandom. We encrypt the plain text by XOR-ing every character of the plaintext and the key.After the 
+encryption we display the printable characters, and for the non-printable display their
+hexadecimal value inside a (Hex:xx) e.g. The character line feed(LF) is represented as (Hex:a). To decrypt 
+the characters redo the same operation, xor the ciphertext and the key to decrypt.
+
+Secondly, the Caesar cipher uses an alphabet that has the characters 0-9,A-Z,a-z in that particular order. If
+there are characters in the plaintext that do not exist in the alphabet we just skip them.To encrypt the data 
+we shift the alphabet by a number of characters that is specified by the user to the left. Then take the plain
+text characters and match them to the new alphabet. For the decryption we revert the alphabet back by shifting
+the alphabet to the right. And then match the positions to decrypt.
+
+At last, the Vigenere creates the tabula recta then takes the keyword that was given by the user and matches the length of the plaintext. For the encryption use the index of the letters in the alphabet match a specific point in the tabula recta, that indicates the characters of the encrypted cipher. For the decryption using the key as a row indicator, find the column that coresponds to the letter of the ciphertext and take the character of the first row in the specific column to decrypt the text.
+------------------------------------------------------------------------------------------------------------
+
+The version of the gcc compiler that was used to compile the program:
+gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
+
+------------------------------------------------------------------------------------------------------------
+Below are the helper functions and macrps that were necessary to implement the assignment:
+------------------------------------------------------------------------------------------------------------
+/** Define the struct for the Tabula Recta
  */
 typedef struct tabula
 {

@@ -1,5 +1,5 @@
 /**
- *This is the include we need to run our library
+ *This is the includes we need to run our library
  */
 
 #include "simple_crypto.h"
@@ -24,8 +24,7 @@ const char myAlphabet[63] = {'0','1','2','3','4','5','6','7','8','9','A','B','C'
 ----------------------------------------------------------------------------------------------------
 */
 
-/**
- * This is a function that takes the plaintext and encrypts it using the secret key by XOR-ing the characters
+/** This is a function that takes the plaintext and encrypts it using the secret key by XOR-ing the characters
  */
 char* OTP_encrypt_text(char* plain_text,char* key){
 
@@ -33,11 +32,11 @@ char* OTP_encrypt_text(char* plain_text,char* key){
 	
 	char* cipher_text = malloc(length);
 
-	while(n<length){
-		cipher_text[n] = plain_text[n]^key[n];
+	while(n<length){							// For all the plaintext
+		cipher_text[n] = plain_text[n]^key[n];  // XOR every character of the plaintext with every character of the key
 		n++;
 	}
-	cipher_text[n] = '\0';
+	cipher_text[n] = '\0'; // Add the end character
 	
 	return cipher_text;
 }
@@ -52,11 +51,11 @@ char* OTP_decrypt_text(char* cipher_text,char* key){
 
 	char* decrypt_text = malloc(length);
 
-	while(n<length){
-		decrypt_text[n] = cipher_text[n]^key[n];
+	while(n<length){							// For all the ciphertext
+		decrypt_text[n] = cipher_text[n]^key[n];// XOR every character of the ciphertext with every character of the key
 		n++;
 	}
-	decrypt_text[n] = '\0';
+	decrypt_text[n] = '\0'; // Add the end character
 	
 	return decrypt_text;
 }
@@ -84,7 +83,7 @@ char* OTP_generate_key(int n){
 			count++;
 		}
 	}
-	data[count] ='\0';
+	data[count] ='\0';						// Add the end character
 	fclose(fp);								// Close the file when we are done
 	return data;
 }
@@ -135,20 +134,20 @@ int check_key(char* plain_text,char* key,int len){
 */
 
 char* caesar_encrypt(char * plain_text,int shift){
-	char* buffer = skip_non_alphabet(plain_text);
+	char* buffer = skip_non_alphabet(plain_text);		// Skip the characters that are not on the alphaber
 	plain_text = buffer;
 	int i =0;
 	char* shifted_alphabet = malloc(SIZE_OF_ALPHABET);
 	char* caesar_encrypted;
 	strcpy(shifted_alphabet,myAlphabet);
 
-	left_shift_alphabet(shifted_alphabet,shift);
+	left_shift_alphabet(shifted_alphabet,shift);		// Shift the alphabet by the amount that was given to us
 
-	while(i<strlen(plain_text)){
-		caesar_encrypted[i] = shifted_alphabet[findIndex(myAlphabet,SIZE_OF_ALPHABET,plain_text[i])];
+	while(i<strlen(plain_text)){						// For all the plain_text
+		caesar_encrypted[i] = shifted_alphabet[findIndex(myAlphabet,SIZE_OF_ALPHABET,plain_text[i])]; // Find the index of the character in the alphabet and input it in the new alphabet to encrypt it
 		i++;
 	}
-	caesar_encrypted[i]='\0';
+	caesar_encrypted[i]='\0';	
 	return caesar_encrypted;
 }
 
@@ -159,10 +158,10 @@ char* caesar_decrypt(char * cipher_text,int shift){
 
 	strcpy(shifted_alphabet,myAlphabet);
 
-	right_shift_alphabet(shifted_alphabet,shift);
+	right_shift_alphabet(shifted_alphabet,shift);		// Shift the alphabet by the amount that was given to us
 
 	while(i<strlen(cipher_text)){
-		caesar_decrypted[i] = shifted_alphabet[findIndex(myAlphabet,SIZE_OF_ALPHABET,cipher_text[i])];
+		caesar_decrypted[i] = shifted_alphabet[findIndex(myAlphabet,SIZE_OF_ALPHABET,cipher_text[i])]; // Find the index of the character in the alphabet and input it in the new alphabet to encrypt it
 		i++;
 	}
 	caesar_decrypted[i] = '\0';
@@ -191,7 +190,6 @@ void left_shift_alphabet_by_one(char alphabet[]){
 void right_shift_alphabet(char alphabet[],int shift){
 	for(int i = 0;i<shift; i++){    
 	   right_shift_alphabet_by_one(alphabet);
-	   //printf("hello%d\n",i);
 	} 
 }
 
@@ -210,9 +208,9 @@ int findIndex( const char a[], int size, char value )
 {
     int index = 0;
 
-    while ( index < size && a[index] != value ) ++index;
+    while ( index < size && a[index] != value ) ++index; // While the value is different +1, until the size limit
 
-    return ( index == size ? -1 : index );
+    return ( index == size ? -1 : index );	// if we found it return size, else -1
 }
 char* skip_non_alphabet(char* plain_text){
 
@@ -262,8 +260,8 @@ char* create_key_vigenere(char* plain_text,char* keyword){
 	int i = 0;
 	char* key = malloc(strlen(plain_text));
 
-	while(i<strlen(plain_text)){
-		key[i] = keyword[i%length];
+	while(i<strlen(plain_text)){ // Match the keys length with the plaintexts 
+		key[i] = keyword[i%length]; // If the key is smaller than the plaintext, repeat the keyword until it matches in length
 		i++;
 	}
 	key[i] = '\0';
@@ -297,9 +295,9 @@ void left_shift_upper_alphabet_by_one(char alphabet[]){
 
 }
 char* vigenere_encrypt(char* plain_text,char* keyword){
-	tabula my_tabula = create_tabula_recta();		//CReate the tabula recta
+	tabula my_tabula = create_tabula_recta();					//Create the tabula recta
 	char*	my_key = create_key_vigenere(plain_text,keyword);	//THIS is the key with the same size with the plaintext
-	char* vigenere_encrypted;//= malloc(strlen(my_key));
+	char* vigenere_encrypted ;
 	int i=0;
 	
 	while(i<strlen(my_key)){
@@ -310,8 +308,8 @@ char* vigenere_encrypt(char* plain_text,char* keyword){
 	return vigenere_encrypted;
 }
 char* vigenere_decrypt(char* cipher_text,char* keyword){
-	tabula my_tabula = create_tabula_recta();		//CReate the tabula recta
-	char* my_key = create_key_vigenere(cipher_text,keyword);	//THIS is the key with the same size with the plaintext
+	tabula my_tabula = create_tabula_recta();					//Create the tabula recta
+	char* my_key = create_key_vigenere(cipher_text,keyword);	//THIS is the key with the same size with the ciphertext
 	char* vigenere_decrypted ;
 	
 	for (int i = 0; i < strlen(my_key); ++i)
@@ -326,7 +324,7 @@ char* vigenere_decrypt(char* cipher_text,char* keyword){
 			}
 		}
 	}
-
+	vigenere_decrypted[strlen(cipher_text)] = '\0';
 	return vigenere_decrypted;
 }
 int create_char_index(char ch){
