@@ -80,5 +80,5 @@ char* vigenere_decrypt(char* cipher_text,char* keyword);
 int create_char_index(char ch);
 
 void OTP_cipher();
-void caesar_cipher();
+void Caesar_cipher();
 void vigenere_cipher();

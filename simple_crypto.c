@@ -84,6 +84,7 @@ char* OTP_generate_key(int n){
 			count++;
 		}
 	}
+	data[count] ='\0';
 	fclose(fp);								// Close the file when we are done
 	return data;
 }
@@ -93,7 +94,7 @@ char* OTP_generate_key(int n){
  */
 void print_string(char* text){
 	int counter = 0;
-	printf("[OTP] encrypted:");
+
 	while(counter < strlen(text)){							// Print the string character by character
 		if(text[counter]<31){								// If the character is non-printable print its hex value in brackets
 			printf("(Hex:%x)", text[counter] & 0xff);
@@ -134,7 +135,7 @@ int check_key(char* plain_text,char* key,int len){
 */
 
 char* caesar_encrypt(char * plain_text,int shift){
-	char* buffer = skip_non_alphabet(plain_text);;
+	char* buffer = skip_non_alphabet(plain_text);
 	plain_text = buffer;
 	int i =0;
 	char* shifted_alphabet = malloc(SIZE_OF_ALPHABET);
@@ -147,13 +148,15 @@ char* caesar_encrypt(char * plain_text,int shift){
 		caesar_encrypted[i] = shifted_alphabet[findIndex(myAlphabet,SIZE_OF_ALPHABET,plain_text[i])];
 		i++;
 	}
+	caesar_encrypted[i]='\0';
 	return caesar_encrypted;
 }
 
 char* caesar_decrypt(char * cipher_text,int shift){
 	int i=0;
-	char* shifted_alphabet = malloc(SIZE_OF_ALPHABET);
+	char shifted_alphabet[SIZE_OF_ALPHABET] ;
 	char* caesar_decrypted ;
+
 	strcpy(shifted_alphabet,myAlphabet);
 
 	right_shift_alphabet(shifted_alphabet,shift);
@@ -162,6 +165,7 @@ char* caesar_decrypt(char * cipher_text,int shift){
 		caesar_decrypted[i] = shifted_alphabet[findIndex(myAlphabet,SIZE_OF_ALPHABET,cipher_text[i])];
 		i++;
 	}
+	caesar_decrypted[i] = '\0';
 
 	return caesar_decrypted;
 }
@@ -176,22 +180,25 @@ void left_shift_alphabet_by_one(char alphabet[]){
 
 	char temporary = alphabet[0];
 
-    for (i = 0; i < SIZE_OF_ALPHABET-1; i++){
+    for (i = 0; i < SIZE_OF_ALPHABET-1; i++)
         alphabet[i] = alphabet[i + 1];
-    }
+    
     alphabet[SIZE_OF_ALPHABET-2] = temporary;
 
+
 }
+
 void right_shift_alphabet(char alphabet[],int shift){
-	int i;
-	for(i = 0;i<shift; i++){    
+	for(int i = 0;i<shift; i++){    
 	   right_shift_alphabet_by_one(alphabet);
+	   //printf("hello%d\n",i);
 	} 
 }
+
 void right_shift_alphabet_by_one(char alphabet[]){
 	int i;
 
-	char temporary = alphabet[SIZE_OF_ALPHABET-2];
+	char temporary = alphabet[SIZE_OF_ALPHABET-1];
 
     for (i = SIZE_OF_ALPHABET-1; i > 0 ; i--){
         alphabet[i] = alphabet[i - 1];
@@ -238,7 +245,7 @@ char* skip_non_alphabet(char* plain_text){
 */
 char* skip_non_upper_characters(char * plain_text){
 	int i = 0,count = 0,length = strlen(plain_text);
-	char* buffer;//= malloc(strlen(plain_text));
+	char* buffer;
 
 	while(i<length){
 		if((plain_text[i]>64) && (plain_text[i]<91)){
@@ -265,7 +272,9 @@ char* create_key_vigenere(char* plain_text,char* keyword){
 tabula create_tabula_recta(){
 	tabula my_tabula;
 	char tmpAlphabet[SIZE_OF_ALPHABET];
+
 	strcpy(tmpAlphabet,upperAlphabet);
+	
 	for (int i = 0; i < TABULA_SIZE; ++i)
 	{
 		for (int j = 0; j < TABULA_SIZE; ++j)
@@ -307,11 +316,11 @@ char* vigenere_decrypt(char* cipher_text,char* keyword){
 	
 	for (int i = 0; i < strlen(my_key); ++i)
 	{
-		for (int j = 0; j < strlen(my_key); ++j)
+		for (int j = 0; j < TABULA_SIZE-1; ++j)
 		{
+
 			if (my_tabula.matrix[create_char_index(my_key[i])][j] == cipher_text[i])
 			{
-				//printf("%c\n",my_tabula.matrix[create_char_index(my_key[i])][j]);
 				vigenere_decrypted[i] = my_tabula.matrix[0][j];
 				break;
 			}
