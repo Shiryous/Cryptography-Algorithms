@@ -88,7 +88,7 @@ void vigenere_cipher(){
 
 	plain_text[strlen(plain_text)-1] = '\0';	// Remove the last character from fgets
 
-	printf("[Vigenere] key    :");
+	printf("[Vigenere] key      :");
 	
 	char* key = malloc(strlen(plain_text));
 
@@ -97,5 +97,12 @@ void vigenere_cipher(){
 	key[strlen(key)-1] = '\0';	// Remove the last character from fgets
 
 	cipher_text = vigenere_encrypt(plain_text,key);
+
+	printf("[Vigenere] encrypted:%s\n",cipher_text);
+
+	decrypt_text = vigenere_decrypt(cipher_text,key);
+
+	printf("[Vigenere] decrypted:%s\n",decrypt_text);
+
 
 }

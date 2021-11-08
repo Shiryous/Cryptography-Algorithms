@@ -75,7 +75,9 @@ void left_shift_upper_alphabet_by_one(char alphabet[]);
 
 char* vigenere_encrypt(char* plain_text,char* key);
 
-int char_index(char ch);
+char* vigenere_decrypt(char* cipher_text,char* keyword);
+
+int create_char_index(char ch);
 
 void OTP_cipher();
 void caesar_cipher();

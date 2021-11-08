@@ -290,19 +290,38 @@ void left_shift_upper_alphabet_by_one(char alphabet[]){
 char* vigenere_encrypt(char* plain_text,char* keyword){
 	tabula my_tabula = create_tabula_recta();		//CReate the tabula recta
 	char*	my_key = create_key_vigenere(plain_text,keyword);	//THIS is the key with the same size with the plaintext
-	char* vigenere_encrypted;
+	char* vigenere_encrypted;//= malloc(strlen(my_key));
 	int i=0;
 	
 	while(i<strlen(my_key)){
-		vigenere_encrypted[i] = my_tabula.matrix[char_index(plain_text[i])][char_index(my_key[i])];
+		vigenere_encrypted[i] = my_tabula.matrix[create_char_index(my_key[i])][create_char_index(plain_text[i])];
 		i++;
 	}
 	vigenere_encrypted[i] = '\0';
 	return vigenere_encrypted;
 }
-int char_index(char ch){
-	int index;
+char* vigenere_decrypt(char* cipher_text,char* keyword){
+	tabula my_tabula = create_tabula_recta();		//CReate the tabula recta
+	char* my_key = create_key_vigenere(cipher_text,keyword);	//THIS is the key with the same size with the plaintext
+	char* vigenere_decrypted ;
+	
+	for (int i = 0; i < strlen(my_key); ++i)
+	{
+		for (int j = 0; j < strlen(my_key); ++j)
+		{
+			if (my_tabula.matrix[create_char_index(my_key[i])][j] == cipher_text[i])
+			{
+				//printf("%c\n",my_tabula.matrix[create_char_index(my_key[i])][j]);
+				vigenere_decrypted[i] = my_tabula.matrix[0][j];
+				break;
+			}
+		}
+	}
 
+	return vigenere_decrypted;
+}
+int create_char_index(char ch){
+	int index;
 	index = (int)ch-65;
 	return index;
 }
