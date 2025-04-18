@@ -1,6 +1,3 @@
-Author:Monogyios Antonios 
-Technical University of Crete
-Security of Systems  
 ------------------------------------------------------------------------------------------------------------
 This is a program called simple_crypto written in the language C creates and utilises 3 different ciphers.
 The One Time Pad, the Caesar and the Vigenere's ciphers.
@@ -72,7 +69,7 @@ char* caesar_encrypt(char* plain_text,int shift);
 char* caesar_decrypt(char * cipher_text,int shift);
 
 /** This is a function to print encrypted string that may include non-printable characters
- * text: The text we want to prin 
+ * text: The text we want to print
  */
 
 void print_string(char* text);
